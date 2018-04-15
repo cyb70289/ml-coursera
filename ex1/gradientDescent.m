@@ -17,10 +17,9 @@ for iter = 1:num_iters
     %       of the cost function (computeCost) and gradient here.
     %
 
-
-
-
-
+    yhat = X * theta;
+    dtheta = mean((yhat - y) .* X);
+    theta -= alpha * dtheta';
 
 
     % ============================================================
