@@ -20,11 +20,9 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
-
-
-
-
-
+yhat = sigmoid(X * theta);
+J = -mean(y .* log(yhat) + (1-y) .* log(1-yhat));
+grad = mean((yhat - y) .* X);
 
 
 % =============================================================
