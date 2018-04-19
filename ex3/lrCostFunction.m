@@ -36,14 +36,11 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
-
-
-
-
-
-
-
-
+t = theta;
+yhat = sigmoid(X * t);
+t(1,1) = 0;
+J = -mean(y .* log(yhat) + (1-y) .* log(1-yhat)) + lambda/2/m * (t'*t);
+grad = mean((yhat - y) .* X) + lambda/m * t';
 
 % =============================================================
 
