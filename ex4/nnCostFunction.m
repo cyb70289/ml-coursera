@@ -62,23 +62,45 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Part 1:
+X1 = [ones(m,1), X];
+z1 = X1 * Theta1';
+a1 = [ones(m,1), sigmoid(z1)];
+z2 = a1 * Theta2';
+a2 = sigmoid(z2);
 
+out = 1 - a2;
+% how to vectorize it in octave
+for i = 1:m;
+    out(i, y(i)) = 1 - out(i, y(i));
+end;
+J = -1/m * sum(sum(log(out)));
 
+% Part 3:
+s = Theta1(:, 2:input_layer_size+1);
+J += lambda * sum(sum(s .* s)) / m / 2;
+s = Theta2(:, 2:hidden_layer_size+1);
+J += lambda * sum(sum(s .* s)) / m / 2;
 
+% Part 2-1:
+y2 = zeros(m, num_labels);
+for i = 1:m;
+    y2(i, y(i)) = 1;
+end;
+dz2 = a2 - y2;
+Theta2_grad = dz2' * a1 / m;
+da1 = dz2 * Theta2;
+dz1 = a1 .* (1-a1) .* da1;
+dz1 = dz1(:, 2:hidden_layer_size+1);
+Theta1_grad = dz1' * X1 / m;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+% Part 2-2:
+th1 = Theta1;
+th2 = Theta2;
+th1(:, 1) = 0;
+th2(:, 1) = 0;
+Theta1_grad += lambda / m * th1;
+Theta2_grad += lambda / m * th2;
 
 % -------------------------------------------------------------
 
